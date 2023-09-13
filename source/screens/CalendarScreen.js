@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -8,33 +8,27 @@ import {
   TouchableOpacity,
   useColorScheme,
   View,
-} from 'react-native';
+} from "react-native";
 
 function CalendarScreen(props) {
-    return (
-      <SafeAreaView style={styles.container}>
-      <View
-        style={[
-          styles.container,
-          styles.justfyCenter,
-        ]}>
-        <Text style={{fontWeight:'bold', fontSize :15}}>
-          Calendar Screen
-        </Text>
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={[styles.container, styles.justfyCenter]}>
+        <Text style={{ fontWeight: "bold", fontSize: 25 }}>Input Screen</Text>
       </View>
-</SafeAreaView>
-    );
-  }
+    </SafeAreaView>
+  );
+}
 
-  export default CalendarScreen;
-  
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-    },
-    justfyCenter: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-  });
+export default CalendarScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  justfyCenter: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});

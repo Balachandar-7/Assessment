@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   KeyboardAvoidingView,
   SafeAreaView,
@@ -11,227 +11,277 @@ import {
   useColorScheme,
   View,
   Platform,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import CommonIcons from '../components/CommonIcons';
-import Colors from '../utils/Colors';
-import JobCard from '../components/JobCards';
-import axios from 'axios';
-import {connect} from 'react-redux';
-import { getJoblistApiCall } from '../redux/action/getJobs';
-function JobScreen(props) {
+} from "react-native";
+//import Icon from 'react-native-vector-icons/FontAwesome';
+import CommonIcons from "../components/CommonIcons";
+import Colors from "../utils/Colors";
+import ListAccord from "../components/List";
+import {
+  ListItem,
+  Avatar,
+  Icon,
+  Rating,
+  RatingProps,
+  Button,
+  AirbnbRating,
+} from "@rneui/themed";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+
+function JobScreen() {
   const offsetKeyboard = Platform.select({
     ios: 0,
     android: 20,
   });
-  //sample data 
+
+  //sample data
   const [data, setData] = useState([
     {
-      name:'Bala',
-      JobId: "BMID - 1",
-      companyName: 'Egrove System',
-      position: 'Lead',
-      date: '21,Jan 2023',
-      location: '3rd Floor, 248, 80 Feet Rd, LIG Colony, KK Nagar, Tamil Nadu 625020',
+      name: "Appointment",
+      avatar_url:
+        "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
+      subtitle: "Vice President",
     },
     {
-      name:'Bala',
-      JobId: "BMID - 2",
-      companyName: 'Egrove System',
-      position: 'Developer',
-      date: '21,Jan 2023',
-      location: '3rd Floor, 248, 80 Feet Rd, LIG Colony, KK Nagar, Tamil Nadu 625020',
+      name: "Trips",
+      avatar_url:
+        "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg",
+      subtitle: "Vice Chairman",
     },
     {
-      name:'Bala',
-      JobId: "BMID - 3",
-      companyName: 'Egrove pvt ltd',
-      position: 'Lead',
-      date: '21,Jan 2023',
-      location: '3rd Floor, 248, 80 Feet Rd, LIG Colony, KK Nagar, Tamil Nadu 625020',
+      name: "Password",
+      avatar_url:
+        "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg",
+      subtitle: "Vice Chairman",
     },
     {
-      name:'Bala',
-      JobId: "BMID - 4",
-      companyName: 'Egrove 12',
-      position: 'Lead',
-      date: '21,Jan 2023',
-      location: '3rd Floor, 248, 80 Feet Rd, LIG Colony, KK Nagar, Tamil Nadu 625020',
+      name: "Pitches",
+      avatar_url:
+        "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg",
+      subtitle: "Vice Chairman",
     },
     {
-      name:'Bala',
-      JobId: "BMID - 5",
-      companyName: 'Egrove 234 ',
-      position: 'Lead',
-      date: '21,Jan 2023',
-      location: '3rd Floor, 248, 80 Feet Rd, LIG Colony, KK Nagar, Tamil Nadu 625020',
+      name: "Updates",
+      avatar_url:
+        "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg",
+      subtitle: "Vice Chairman",
+    },
+  ]);
+  const [cardData, setCardData] = useState([
+    {
+      name: "John Smith",
+      profileImg: "https://randomuser.me/api/portraits/men/33.jpg",
     },
     {
-      name:'Bala',
-      JobId: "BMID - 6",
-      companyName: 'Egrove 5555',
-      position: 'Manager',
-      date: '21,Jan 2023',
-      location: '248, 80 Feet Rd, LIG Colony, KK Nagar, Tamil Nadu 625020',
+      name: "Sara Parker",
+      profileImg: "https://randomuser.me/api/portraits/women/37.jpg",
     },
     {
-      name:'Bala',
-      JobId: "BMID - 7",
-      companyName: 'Egrove System333',
-      position: 'Lead111',
-      date: '21,Jan 2023',
-      location: '3rd Floor, 248, 80 Feet Rd, LIG Colony, KK Nagar, Tamil Nadu 625020',
+      name: "Paul Allen",
+      profileImg: "https://randomuser.me/api/portraits/men/37.jpg",
     },
-    
-  ])
-  const handleClick = (data) =>{
-   
-    props.navigation.navigate("TaskScreen",{data: data})
-    
-  }
-  const getList = async () =>{
-      props.getJoblistApiCall()
-  }
-  useEffect(()=>{
-    getList()
-  },[])
-// Job listing data example for redux call and get the information from the store sample API is not get i the our requirement.
-  useEffect(()=>{
-    console.log('Post data', props.postData)
-  },[props])
+    {
+      name: "John Smith",
+      profileImg: "https://randomuser.me/api/portraits/men/7.jpg",
+    },
+    {
+      name: "Terry Andrews",
+      profileImg: "https://randomuser.me/api/portraits/women/39.jpg",
+    },
+    {
+      name: "Andy Vitale",
+      profileImg: "https://randomuser.me/api/portraits/men/12.jpg",
+    },
+    {
+      name: "John Smith",
+      profileImg: "https://randomuser.me/api/portraits/women/20.jpg",
+    },
+  ]);
 
+  const CardItems = ({ data }) => {
+    console.log("dataaaaa", data);
+    return (
+      <View style={{ flex: 3, marginVertical: 10 }}>
+        <View
+          style={{
+            flex: 1,
+            marginHorizontal: 15,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Avatar size={40} source={{ uri: data?.profileImg }} />
+          <Text style={{ color: "#000000", fontSize: hp(2), marginLeft: 10 }}>
+            {data.name}
+          </Text>
+        </View>
+      </View>
+    );
+  };
   return (
     <SafeAreaView style={styles.container}>
-        <KeyboardAvoidingView
-        behavior={Platform.OS === 'android' ? 'height' : 'padding'}
-        keyboardVerticalOffset={offsetKeyboard}
-        style={{flex: 1}}>
-        <View style={styles.container}>
-
-          <View style={{ paddingTop: 10, backgroundColor: Colors.white}}>
-            <View
-              style={[
-                {
-                  
-                  flexDirection: 'row',
-                  marginHorizontal: 5,
-                  marginVertical: 10,
-                  alignItems: 'center',
-                },
-              ]}>
-              <View style={{flex: 1, alignItems: 'center'}}>
-                <CommonIcons
-                  name="chevron-left"
-                  type="FontAwesome"
+      <View
+        style={{
+          backgroundColor: "#f7f7f7",
+          paddingVertical: 15,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ fontWeight: "bold", color: "#000000", fontSize: hp(3) }}>
+          List
+        </Text>
+      </View>
+      <ScrollView style={{ flex: 1 }}>
+        <View
+          style={{
+            flex: 1,
+            borderWidth: 1,
+            borderColor: "#e9e9ee",
+            marginVertical: 10,
+          }}
+        >
+          <>
+            <ListItem>
+              <Avatar
+                size={32}
+                rounded
+                source={{
+                  uri: "https://randomuser.me/api/portraits/men/5.jpg",
+                }}
+              />
+              <ListItem.Content>
+                <ListItem.Title
                   style={{
-                    marginHorizontal: 15,
-                    fontSize: 20,
-                    color: Colors.black,
+                    fontSize: hp(2.2),
+                    fontWeight: "bold",
+                    color: "#7b7f82",
                   }}
-                />
-              </View>
-              <View style={{flex: 5, alignItems: 'center'}}>
+                >
+                  Limited supply! its like digital gold!
+                </ListItem.Title>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  {/* <Rating
+          //showRating
+          imageSize={40}
+          //onFinishRating={ratingCompleted}
+          readonly
+          style={{ paddingVertical: 10}}
+        /> */}
+                  <AirbnbRating
+                    size={20}
+                    reviews={[]}
+                    reviewSize={0}
+                    starContainerStyle={{ marginTop: -20, marginRight: 15 }}
+                  />
+                  <ListItem.Subtitle style={{ fontSize: hp(1.8) }}>
+                    5 months ago
+                  </ListItem.Subtitle>
+                </View>
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
+          </>
+        </View>
+        <View style={{ flex: 5 }}>
+          <>
+            {data.map((l, i) => (
+              <ListAccord data={l} />
+            ))}
+          </>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              marginVertical: "10%",
+            }}
+          >
+            <Button
+              title="Button1"
+              color={"#ffffff"}
+              titleStyle={{ color: "#63676b" }}
+              containerStyle={{
+                width: 150,
+
+                borderRadius: 0,
+              }}
+            />
+            <Button
+              title="Button2"
+              color={"#e4e2e2"}
+              titleStyle={{ color: "#63676b" }}
+              containerStyle={{
+                width: 150,
+                borderRadius: 0,
+              }}
+            />
+          </View>
+          <View
+            style={{
+              flex: 5,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <View
+              style={{
+                flex: 4,
+                backgroundColor: "#ffffff",
+                marginHorizontal: 25,
+                paddingBottom: "5%",
+              }}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginTop: 10,
+                }}
+              >
                 <Text
                   style={{
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: 'bold',
-                  }}>
-                  All Jobs
+                    fontWeight: "bold",
+                    color: "#625e8d",
+                    fontSize: hp(2.5),
+                  }}
+                >
+                  CARD WITH DIVIDER
                 </Text>
               </View>
               <View
                 style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                }}>
-                <CommonIcons
-                  name="filter"
-                  type="AntDesign"
-                  style={{marginHorizontal: 15, fontSize: 20}}
-                />
-                <CommonIcons
-                  name="notifications-outline"
-                  type="Ionicons"
-                  style={{marginHorizontal: 15, fontSize: 20}}
-                />
-              </View>
-            </View>
-            <View style={{  height: 50, marginHorizontal: 15,  }}>
-              <View 
-                style={{
-                  //flex:1,
-                  width: '100%',
-                  height: 36,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                  borderWidth: 1,
-                  borderColor: Colors.text_light_gray,
-                  borderRadius: 30,
-                  backgroundColor: Colors.gray1
-                }}>
-                  <View style={{flex:0.5,alignItems: 'center', marginLeft: 10}}>
-                  <CommonIcons
-                  name="search"
-                  type="Ionicons"
-                  style={{fontSize: 20}}
-                />
-                  </View>
-
-                  <View style={{flex:6}}>
-                <TextInput
-                  style={{
-                    height: 40,
-                    borderRadius: 5,
-                    paddingHorizontal: 10,
-                    width: '90%',
-                    //justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}
-                  placeholder='Search'
-                />
-                </View>
-              </View>
+                  borderBottomWidth: 2,
+                  borderBottomColor: "#e7e8ea",
+                  marginHorizontal: 15,
+                  marginVertical: 10,
+                }}
+              />
+              {cardData.map((item1, index) => {
+                return <CardItems data={item1} />;
+              })}
             </View>
           </View>
-
-          <View style={{flex:10, backgroundColor: Colors.btn_back_blue, }}>        
-            <ScrollView style={{flex:10,marginHorizontal: 15, }}>
-              <JobCard 
-              data={data}
-              onPressCard={handleClick}
-              />
-
-            </ScrollView>
-            {/* <View style={{padding: '4%'}} /> */}
-            </View>
-
-
-          {/* <TouchableOpacity onPress={() => {
-            props.navigation.navigate("EditScreen")
-        }} tyle={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'red' }}>
-        <Text style={{backgroundColor: 'red', color: 'green'}}>Home Screen</Text>
-        <CommonIcons name="rocket"  type='FontAwesome' />
-        </TouchableOpacity> */}
         </View>
-        </KeyboardAvoidingView>
-
+        <View style={{ paddingVertical: "5%" }} />
+      </ScrollView>
     </SafeAreaView>
   );
 }
-const mapStateToProps = (state) => {
-  const postData= state.getJobList.jobData;
-  return {
-    postData: postData,
-  };
-};
 
-const mapDispatchToProps = (dispatch) => ({
-  getJoblistApiCall: () => dispatch(getJoblistApiCall()),
-});
-export default connect(mapStateToProps, mapDispatchToProps) (JobScreen);
+export default JobScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -239,7 +289,7 @@ const styles = StyleSheet.create({
   },
   justfyCenter: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

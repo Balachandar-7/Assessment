@@ -19,13 +19,13 @@ const Tab = createBottomTabNavigator();
 function StackNavigator() {
   return (
     <NavigationContainer>
-    {/* <Tab.Navigator>
-    <Stack.Screen  options={{ headerShown: false }}  name="Home" component={HomeScreen} />
-    <Stack.Screen  options={{ headerShown: false }}  name="Job" component={JobScreen} />
-    <Stack.Screen  options={{ headerShown: false }}  name="Calendar" component={CalendarScreen} />
-    <Stack.Screen  options={{ headerShown: false }}  name="Task" component={TaskScreen} />
-  </Tab.Navigator> */}
-    <CurvedBottomBarExpo.Navigator
+    <Tab.Navigator tabBar={renderTabBar}>
+    <Stack.Screen  options={{ headerShown: false }}  name="Buttons" component={HomeScreen} />
+    <Stack.Screen  options={{ headerShown: false }}  name="List" component={JobScreen} />
+    <Stack.Screen  options={{ headerShown: false }}  name="Input" component={CalendarScreen} />
+    <Stack.Screen  options={{ headerShown: false }}  name="Fonts" component={TaskScreen} />
+  </Tab.Navigator>
+    {/* <CurvedBottomBarExpo.Navigator
 
       type="DOWN"
       style={styles.bottomBar}
@@ -73,7 +73,7 @@ function StackNavigator() {
         component={TaskScreen}
         position="RIGHT"
       />
-    </CurvedBottomBarExpo.Navigator>
+    </CurvedBottomBarExpo.Navigator> */}
 
     </NavigationContainer>
   );
@@ -118,20 +118,78 @@ const _renderIcon = (routeName, selectedTab) => {
     );
   };
   
-const renderTabBar = ({ routeName, selectedTab, navigate }) => {
+const renderTabBar = ({ state, descriptors, navigation}) => {
     return (
       <>
-      <TouchableOpacity style={{alignItems: 'center',}} />
-        <TouchableOpacity
-          onPress={() => navigate(routeName)}
-          style={[styles.tabbarItem,
-            routeName === selectedTab ? { borderBottomWidth: 3,  alignSelf: 'center', borderBottomColor: Colors.sky_blue } : null
-          ]}
-        >
-  
-          {_renderIcon(routeName, selectedTab)}
-          <Text style={{ fontSize: 13, color: routeName === selectedTab ? Colors.sky_blue : Colors.head_gray }}>{routeName == 'HomeScreen' ? 'Home' : routeName == 'JobScreen' ? 'Job' : routeName == 'CalendarScreen' ? 'Calendar' : 'Task'}</Text>
-        </TouchableOpacity>
+  <View style={{ flexDirection: 'row' , paddingTop: 10}}>
+      {state.routes.map((route, index) => {
+        const { options } = descriptors[route.key];
+        const label =
+          options.tabBarLabel !== undefined
+            ? options.tabBarLabel
+            : options.title !== undefined
+            ? options.title
+            : route.name;
+
+        const isFocused = state.index === index;
+
+        const onPress = () => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: route.key,
+            canPreventDefault: true,
+          });
+
+          if (!isFocused && !event.defaultPrevented) {
+            // The `merge: true` option makes sure that the params inside the tab screen are preserved
+            navigation.navigate({ name: route.name, merge: true });
+          }
+        };
+
+        const onLongPress = () => {
+          navigation.emit({
+            type: 'tabLongPress',
+            target: route.key,
+          });
+        };
+
+        let iconType = ""
+        let iconname = ""
+        if(label == "Buttons"){
+          iconType = 'Entypo';
+          iconname= "emoji-neutral";
+        }else if(label == "List"){
+          iconType = 'Entypo';
+          iconname= "list";
+        }else if(label == "Input"){
+          iconType = 'MaterialCommunityIcons';
+          iconname= "note-text";
+        }
+        else if(label == "Fonts"){
+          iconType = 'FontAwesome';
+          iconname= "font";
+        }
+        return (
+          <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityState={isFocused ? { selected: true } : {}}
+            accessibilityLabel={options.tabBarAccessibilityLabel}
+            testID={options.tabBarTestID}
+            onPress={onPress}
+            onLongPress={onLongPress}
+            style={{ flex: 1, alignItems: 'center' }}
+          >
+            {
+
+            }
+            <CommonIcons name={iconname}  type={iconType} style={{color:isFocused ? '#e61f60' : '#929292',fontSize: 30 }}  size={10} />
+            <Text style={{ color: isFocused ? '#e61f60' : '#222', fontSize: 15}}>
+              {label}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
       </>
     );
   };
