@@ -1,78 +1,122 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  FlatList,
-  KeyboardAvoidingView,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
+  Image,
+  Pressable,
   StyleSheet,
   Text,
+  View,
+  FlatList,
   TouchableOpacity,
-  useColorScheme,
-    View,
-    ActivityIndicator,
-    Image,
-  Pressable
+  ScrollView
 } from "react-native";
-import CommonIcons from "../components/CommonIcons";
-import { Avatar, Button, Icon } from "@rneui/themed";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
-
+import axios from "axios";
 
 function IntroScreen(props) {
+  const [data, setData] = useState([]);
 
+  const getData = async () => {
+    await axios
+      .get("https://api.slingacademy.com/v1/sample-data/photos?offset=5&limit=20")
+      .then((response) => {
+        console.log("response", response?.data?.photos);
+        setData(response?.data?.photos);
+      });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const renderItems = ({ item, index }) => {
+    
+    return (
+      <TouchableOpacity
+        key={index}
+
+        style={{
+          flex: 5,
+          marginVertical: 10,
+          alignItems: "center",
+          borderRadius: 10
+        }}
+        onPress={() => {
+          props.navigation.navigate("HomeScreen")
+        }}
+        >
+          <Image
+          source={{uri: item?.url}}
+          style={{width: 300, height: 200, borderRadius: 10}}
+          />
+          
+      </TouchableOpacity>
+    );
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-          <View style={{flex: 4, justifyContent: 'center', alignItems: 'center', marginTop: '10%'}}>
-          <Image
-            source={require("../utils/assets/B.jpeg")}
-                  style={{
-                      aspectRatio: 1,
-                      width: wp(25),
-                      height: hp(25),
-                      borderRadius: 10
-             }}
-              />
-              <View  style={[ styles.justfyCenter,{marginTop: '5%'}]}>
-              <Text style={{ textAlign: 'center', color: '#fff', fontWeight: "bold", fontSize: hp(3.5), marginHorizontal: 15 }}>Lorum Ipsum dolor sit amet Lorem </Text>
-        </View>
-          </View>
-          <View style={{ flex: 5, justifyContent: 'center', alignItems: 'center' }}>
-              <View style={{ flex: 4, justifyContent: 'flex-end', alignItems: 'center' ,}}>
-                  <Pressable
-                  style={{width: wp(50), height: hp(8), backgroundColor: '#000', justifyContent: 'center', alignItems: 'center', borderRadius: 5}}
-                      onPress={() => {
-                      props.navigation.navigate("MainScreen",{screen: 'LoginScreen'})
-                }}>
-              <Text style={{color: '#fff', fontWeight: "bold", fontSize: hp(2.8) }}>LORUM IPSUM</Text>
-                </Pressable>
-              </View>
-              <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ color: '#e4f8d9', fontWeight: "bold", fontSize: hp(2) }}>Lorum Ipsum dolor sit amet</Text>
-              <Text style={{color: '#fff', fontWeight: "bold", fontSize: hp(3) }}>Lorum Ipsum</Text>
-              </View>
-
-          </View>
-    </SafeAreaView>
+    <View style={{ flex: 1, marginHorizontal: 15, marginVertical: 10 }}>
+      <View
+        style={{
+          flex: 5,
+          marginVertical: 10,
+          alignItems: "center"
+        }}
+      >
+        <ScrollView scrollEnabled={true} style={{ flex: 5 }}>
+          <FlatList
+            style={{ flex: 5 }}
+            scrollEnabled
+            data={data}
+            renderItem={renderItems}
+          />
+        </ScrollView>
+      </View>
+    </View>
   );
 }
 
-export default IntroScreen
-    
-    ;
-
 const styles = StyleSheet.create({
-  container: {
-        flex: 1,
-        backgroundColor: '#6dc561'
+  app: {
+    marginHorizontal: "auto",
+    maxWidth: 500
   },
-  justfyCenter: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+  logo: {
+    height: 80
   },
+  header: {
+    padding: 20
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: "1.5rem",
+    marginVertical: "1em",
+    textAlign: "center"
+  },
+  text: {
+    lineHeight: "1.5em",
+    fontSize: "1.125rem",
+    marginVertical: "1em",
+    textAlign: "center"
+  },
+  link: {
+    color: "#1B95E0"
+  },
+  code: {
+    fontFamily: "monospace, monospace"
+  }
 });
+
+const buttonStyles = StyleSheet.create({
+  button: {
+    backgroundColor: "#2196F3",
+    borderRadius: 2
+  },
+  text: {
+    color: "#fff",
+    fontWeight: "500",
+    padding: 8,
+    textAlign: "center",
+    textTransform: "uppercase"
+  }
+});
+
+export default IntroScreen;

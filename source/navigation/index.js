@@ -30,8 +30,7 @@ function StackNavigator() {
               }}
                initialRouteName="Intro">
         <Main.Screen name="Intro" component={IntroScreen} />
-        <Main.Screen name="MainScreen" component={LoginScreen} />
-        <Main.Screen name="BottomMain" component={NavTabs} />
+        <Main.Screen name="HomeScreen" component={HomeScreen} />
     </Main.Navigator>
   </NavigationContainer>
   );
