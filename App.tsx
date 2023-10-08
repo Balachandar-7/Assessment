@@ -28,19 +28,15 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {store, persistor} from './source/store';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
+import CommonColor from './source/utils/Colors';
 
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  
   return (
     <SafeAreaView style={{flex:12}}>
       <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+        barStyle={'light-content'}
+        backgroundColor={CommonColor.app_theme}
       />
       <View style={{ flex: 1, }}>
       <Provider store={store}>

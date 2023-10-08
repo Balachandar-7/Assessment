@@ -13,7 +13,7 @@ const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   blacklist: ['Home'],
-  timeout: 100000,
+  timeout: 1000,
 };
 const sagaMiddleware = createSagaMiddleware();
 

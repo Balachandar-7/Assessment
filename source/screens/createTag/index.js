@@ -23,6 +23,8 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import Tags from '../../components/Tags';
+import Fonts from '../../assets/fonts';
 
 function CreateTagScreen(props) {
   const dispatch = useDispatch();
@@ -34,6 +36,7 @@ function CreateTagScreen(props) {
 
   const addTags = (newItem) =>{
     setTags(current => [...current, "#"+newItem]);
+    setTag("")
   }
 
   // create posts api call
@@ -72,6 +75,9 @@ function CreateTagScreen(props) {
           <View
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <TouchableOpacity
+            onPress={()=>{
+              props.navigation.goBack()
+            }}
               style={{
                 width: 50,
                 height: 50,
@@ -99,7 +105,7 @@ function CreateTagScreen(props) {
                 borderRadius: 20,
               }}>
               <Text
-                style={{color: '#fff', fontWeight: 'bold', fontSize: hp(2)}}>
+                style={[Fonts.InterBold, {color: '#fff', fontWeight: 'bold', fontSize: hp(2)}]}>
                 Post
               </Text>
             </TouchableOpacity>
@@ -113,11 +119,11 @@ function CreateTagScreen(props) {
             <View style={{flex: 2, marginHorizontal: 20}}>
               <View style={{flex: 2}}>
                 <Text
-                  style={{
+                  style={[Fonts.InterBold, {
                     color: '#fff',
                     fontWeight: 'bold',
                     fontSize: hp(2.5),
-                  }}>
+                  }]}>
                   Create
                 </Text>
               </View>
@@ -130,7 +136,7 @@ function CreateTagScreen(props) {
                 <TextInput 
                 placeholder="What's on your mind?" 
                 placeholderTextColor={'#3f4a63'}
-                style={{color: '#fff', fontSize: hp(2.5)}}
+                style={[Fonts.InterMedium, {color: '#fff', fontSize: hp(2)}]}
                 value={caption}
                 onChangeText={text => {
                     setCaption(text)
@@ -141,11 +147,11 @@ function CreateTagScreen(props) {
             <View style={{flex: 2, marginHorizontal: 20, marginTop: '5%'}}>
               <View style={{flex: 2}}>
                 <Text
-                  style={{
+                  style={[Fonts.InterBold, {
                     color: '#fff',
                     fontWeight: 'bold',
                     fontSize: hp(2.5),
-                  }}>
+                  }]}>
                   Add Tags
                 </Text>
               </View>
@@ -178,7 +184,7 @@ function CreateTagScreen(props) {
                 borderRadius: 20,
               }}>
               <Text
-                style={{color: '#fff', fontWeight: 'bold', fontSize: hp(3)}}>
+                style={[Fonts.InterBold, {color: '#fff', fontWeight: 'bold', fontSize: hp(3)}]}>
                 Add
               </Text>
             </TouchableOpacity>
@@ -189,20 +195,13 @@ function CreateTagScreen(props) {
               </View>
             </View>
             <View style={{flex: 2, flexDirection: 'row', marginVertical: '5%', marginHorizontal: 15, flexWrap: 'wrap'}}>
-           {tags != undefined&& tags!= null && tags != [] && tags.map((itm, ind) => {
-            return (
-              <View
-                style={{
-                
-                  backgroundColor: '#283959',
-                  borderRadius: 5,
-                  padding: '2%',
-                  margin: '2%',
-                }}>
-                <Text style={{color: '#b9c3d5'}}>{itm}</Text>
-              </View>
-            );
-          })}
+           {tags != undefined && tags!= null && tags != [] ?
+          <Tags
+          data={tags}
+          />
+          :
+          null
+           }
         </View>
           </ScrollView>
         </View>
