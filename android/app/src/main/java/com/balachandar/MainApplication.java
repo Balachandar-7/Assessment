@@ -1,4 +1,4 @@
-package com.balachandar;
+package com.Tranaa;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

@@ -73,9 +73,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.balachandar"
+    namespace "com.Tranaa"
     defaultConfig {
-        applicationId "com.balachandar"
+        applicationId "com.Tranaa"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

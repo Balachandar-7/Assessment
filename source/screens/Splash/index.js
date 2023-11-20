@@ -46,9 +46,9 @@ function SplashScreen(props) {
     )
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#0a1224' }}>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff' }}>
         <Image
-         source={require('../../assets/images/ChirpzLogo.png')}
+         source={require('../../assets/images/logo.png')}
          style={{width: 200, height: 200, resizeMode: 'contain',}}
          ></Image>
     </View>

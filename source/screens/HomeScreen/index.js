@@ -38,100 +38,15 @@ function HomeScreen(props) {
     );
   };
 
-  useEffect(() => {
-    if (chirpzData == undefined && chirpzData == null && chirpzData == []) {
-      getData();
-    } else {
-      setData(chirpzData?.listData?.listData);
-    }
-  }, []);
-  useFocusEffect(
-    React.useCallback(() => {
-      getData()
-      return () => {
-      // Do something when the screen is unfocused
-      };
-    }, [])
-  )
-  const renderItems = ({item, index}) => {
-    return (
-      <View key={index} style={{flex: 2}}>
-        <View style={{flex: 2, flexDirection: 'row', marginHorizontal: 15}}>
-          <Text style={[Fonts.InterBold, {color: '#fff', marginRight: '5%', fontWeight: 'bold', fontSize: hp(2)}]}>
-            {item?.userName}
-          </Text>
-          {
-            item?.isVerified ?
-          <CommonIcons
-            type="AntDesign"
-            name="checkcircle"
-            style={{color: '#ffb502'}}
-          />
-          :
-          null
-  }
-        </View>
-        <View style={{flex: 2, marginHorizontal: 15, marginTop: 10,}}>
-          <Text numberOfLines={5} style={[Fonts.InterRegular,{color: '#93a0c0', fontSize: hp(2), marginRight: 10}]}>{item?.caption}</Text>
-        </View>
-        <Tags 
-          data={item?.tags}
-        />
-        <View
-          style={{
-            borderWidth: 0.6,
-            borderColor: '#1c3059',
-            marginBottom: '5%',
-            marginHorizontal: 0,
-          }}
-        />
-      </View>
-    );
-  };
+
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={[styles.container]}>
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            flexDirection: 'row',
-          }}>
-          <View style={{flex: 1, marginLeft: 10}}>
-            <Image
-              source={require('../../assets/images//ProfilePicture.png')}
-              style={styles.profile}
-            />
-          </View>
-          <View style={{flex: 5, justifyContent: 'center', marginLeft: '25%'}}>
-            <Text style={[Fonts.InterBold,{color: '#fff', fontWeight: 'bold', fontSize: hp(3)} ]}>
-              Chirpz
-            </Text>
-          </View>
+        <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
+          <Text>
+            Home screen
+          </Text>
         </View>
-        <View
-          style={styles.line}
-        />
-        <View style={{flex: 8,}}>
-          <FlatList
-            data={data}
-            keyExtractor={item => item?.id}
-            renderItem={renderItems}
-          />
-        </View>
-      </View>
-      <TouchableOpacity 
-      onPress={()=>{
-        props.navigation.navigate("CreateTag")
-      }}
-      style={styles.plusIcon}>
-          <CommonIcons
-            type="AntDesign"
-            name="pluscircle"
-            style={{color: '#ffb502', fontSize: 50,}}
-          />
-        </TouchableOpacity> 
     </SafeAreaView>
   );
 }
@@ -141,7 +56,6 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 12,
-    backgroundColor: '#0a1224',
   },
   profile:{width: 50, height: 50, resizeMode: 'contain'},
   justfyCenter: {
